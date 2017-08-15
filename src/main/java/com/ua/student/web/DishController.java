@@ -91,7 +91,8 @@ public class DishController {
     }
 
     @RequestMapping(value = {"/dishImage"}, method = RequestMethod.GET)
-    public void dishImage(HttpServletResponse response, @RequestParam("id") String id) throws IOException {
+    public void dishImage(HttpServletResponse response,
+                          @RequestParam("id") String id) throws IOException {
         Dish dish = null;
         if (id != null) {
             dish = dishDAO.getDishById(Integer.valueOf(id));
@@ -146,8 +147,7 @@ public class DishController {
     }
 
     @RequestMapping({"/orderDish"})
-    public String orderDish(HttpServletRequest request,
-                            @RequestParam(value = "id", defaultValue = "") String id,
+    public String orderDish(HttpServletRequest request, @RequestParam(value = "id", defaultValue = "") String id,
                             Authentication authentication) {
 
         Dish dish = null;
@@ -171,8 +171,7 @@ public class DishController {
     }
 
     @RequestMapping({"/removeDish"})
-    public String removeDish(HttpServletRequest request,
-                             Authentication authentication,
+    public String removeDish(HttpServletRequest request, Authentication authentication,
                              @RequestParam String id) {
 
         Dish dish = null;
