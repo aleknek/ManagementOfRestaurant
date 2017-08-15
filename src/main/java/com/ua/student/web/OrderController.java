@@ -155,7 +155,9 @@ public class OrderController {
     }
 
     @RequestMapping(value = {"/createGroupOrder"}, method = RequestMethod.POST)
-    public String createGroupOrder(HttpServletRequest request, Model model, @RequestParam("numberOfGroup") String numberOfGroupOrder) {
+    public String createGroupOrder(HttpServletRequest request,
+                                   Model model,
+                                   @RequestParam("numberOfGroup") String numberOfGroupOrder) {
 
         OrderGroup orderGroup = new OrderGroup();
         orderDAO.insert(orderGroup, Integer.valueOf(numberOfGroupOrder), OrderStatuses.newOrder);
@@ -228,7 +230,6 @@ public class OrderController {
     public String saveOrderStatusSent(HttpServletRequest request,
                                       Model model,
                                       @ModelAttribute("orderForm") Order orderForm,
-                                      @RequestParam(value = "idUserGroup", defaultValue = "") String idUserGroup,
                                       Authentication authentication) {
         return orderService.saveOrder(orderForm, request, authentication, model, OrderStatuses.closed);
     }
@@ -237,7 +238,6 @@ public class OrderController {
     public String saveOrderStatusNew(HttpServletRequest request,
                                      Model model,
                                      @ModelAttribute("orderForm") Order orderForm,
-                                     @RequestParam(value = "idUserGroup", defaultValue = "") String idUserGroup,
                                      Authentication authentication) {
 
         return orderService.saveOrder(orderForm, request, authentication, model, OrderStatuses.newOrder);

@@ -22,24 +22,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
 
         String sql = "SELECT users.username AS username, roles.name AS role from db_restaurant.user_roles AS user_roles " +
-        "LEFT JOIN db_restaurant.role AS roles " +
-        "ON user_roles.id_role = roles.id " +
-        "LEFT JOIN db_restaurant.users AS users " +
-        "ON user_roles.id_user = users.id " +
-        "WHERE users.username=?";
+                "LEFT JOIN db_restaurant.role AS roles " +
+                "ON user_roles.id_role = roles.id " +
+                "LEFT JOIN db_restaurant.users AS users " +
+                "ON user_roles.id_user = users.id " +
+                "WHERE users.username=?";
 
         auth.jdbcAuthentication().dataSource(dataSource)
                 .usersByUsernameQuery("select username,password, true from users where username=?")
-                        .authoritiesByUsernameQuery(sql);
+                .authoritiesByUsernameQuery(sql);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-       http.csrf().disable();
+        http.csrf().disable();
 
         // The pages requires login as USER or ADMIN.
-        // If no login, it will redirect to /account page.
+        // If no login, it will redirect to /home page.
         http.authorizeRequests().antMatchers("/order", "/home")
                 .access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
 
@@ -51,13 +51,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
 
         // Config for Login Form
-        http.authorizeRequests().and().formLogin()//
+        http.authorizeRequests().and().formLogin()
                 // Submit URL of login page.
                 .loginProcessingUrl("/j_spring_security_check") // Submit URL
-                .loginPage("/login")//
-                .defaultSuccessUrl("/home")//
-                .failureUrl("/login?error=true")//
-                .usernameParameter("userName")//
+                .loginPage("/login")
+                .defaultSuccessUrl("/home")
+                .failureUrl("/login?error=true")
+                .usernameParameter("userName")
                 .passwordParameter("password")
                 // Config for Logout Page
                 // (Go to home page).
@@ -67,6 +67,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setEncoding("UTF-8");
         filter.setForceEncoding(true);
         http.addFilterBefore(filter, CsrfFilter.class);
-
     }
 }

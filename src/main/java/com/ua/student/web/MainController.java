@@ -40,7 +40,7 @@ public class MainController {
 	}
 
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
-	public String account(Model model) {
+	public String home(Model model) {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		model.addAttribute("userDetails", userDetails);
 		return "home";

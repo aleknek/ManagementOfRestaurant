@@ -60,7 +60,7 @@ public class UserController {
             return "login";
         } else {
             userDAO.update(user);
-            return "account";
+            return "home";
         }
     }
 }

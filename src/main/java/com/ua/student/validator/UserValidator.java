@@ -4,6 +4,8 @@ import com.ua.student.dao.UserDAO;
 import com.ua.student.model.User;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -28,7 +30,9 @@ public class UserValidator implements Validator {
             errors.rejectValue("username", "username.empty", "Login должен быть заполнен!");
         }
 
-        if (userDAO.getUserByUsername(user.getUsername()) != null) {
+        // если это новый польователь, то проверим, что та
+        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")
+                && userDAO.getUserByUsername(user.getUsername()) != null) {
             errors.rejectValue("username", "Duplicate.username", "Такой login уже занят!");
         }
 
@@ -48,8 +52,8 @@ public class UserValidator implements Validator {
             errors.rejectValue("phone", "phone.empty", "Телефон должен быть заполнен!");
         }
 
-        if( !EmailValidator.getInstance().isValid(user.getEmail() ) ){
-			errors.rejectValue("email", "email.notValid", "Некорректный email адрес!");
-		}
+        if (!EmailValidator.getInstance().isValid(user.getEmail())) {
+            errors.rejectValue("email", "email.notValid", "Некорректный email адрес!");
+        }
     }
 }

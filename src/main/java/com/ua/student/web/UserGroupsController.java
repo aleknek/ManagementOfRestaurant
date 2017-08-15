@@ -60,7 +60,8 @@ public class UserGroupsController {
     }
 
     @RequestMapping(value = {"/quitGroup"}, method = RequestMethod.GET)
-    public String quitFromGroup(@RequestParam(value = "numberOfGroup") String numberOfGroup, Authentication authentication) {
+    public String quitFromGroup(@RequestParam(value = "numberOfGroup") String numberOfGroup,
+                                Authentication authentication) {
         userGroupsDAO.quitFromGroup(Integer.valueOf(numberOfGroup), userDAO.getUserByUsername(authentication.getName()).getId());
         return "redirect:/userGroups";
     }

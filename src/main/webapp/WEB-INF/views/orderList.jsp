@@ -21,6 +21,7 @@
 <table border="1" style="width:100%">
     <tr>
         <th>№ заказа</th>
+        <th>Групповой заказ</th>
         <th>Дата заказа</th>
         <th>Сумма</th>
         <th>Статус заказа</th>
@@ -30,20 +31,28 @@
         <tr>
             <td>${order.numberOfOrder}</td>
             <td>
-                <fmt:formatDate value="${order.dateOfOrder}" pattern="dd-MM-yyyy HH:mm"/>
+                <c:if test="${order.getClass().name == 'com.ua.student.model.OrderGroup'}">
+                    Да
+                </c:if>
+                <c:if test="${order.getClass().name == 'com.ua.student.model.Order'}">
+                    Нет
+                </c:if>
+            </td>
+            <td>
+                <fmt:formatDate value="${order.dateOfOrder}" pattern="dd-MM-yyyy"/>
             </td>
             <td style="color:red;">
                 <fmt:formatNumber value="${order.sum}" type="currency"/>
             </td>
             <td>${order.getOrderStatus().getName()}</td>
-            <td><a href="/order?numberOfOrder=${order.numberOfOrder}">Просмотр</a>
+            <td>
+                <a href="/order?numberOfOrder=${order.numberOfOrder}">Просмотр</a>
                 <c:if test="${order.getOrderStatus().getName() == 'Новый'}">
-                <a href="/editOrder?numberOfOrder=${order.numberOfOrder}">Редактировать</a>
+                    <a href="/editOrder?numberOfOrder=${order.numberOfOrder}">Редактировать</a>
+                </c:if>
             </td>
-            </c:if>
         </tr>
     </c:forEach>
 </table>
-
 </body>
 </html>

@@ -18,5 +18,4 @@ public class BambooWebInitializer extends AbstractAnnotationConfigDispatcherServ
     protected String[] getServletMappings() {
         return new String[]{"/"};
     }
-
 }
